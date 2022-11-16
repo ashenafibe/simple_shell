@@ -8,7 +8,6 @@
  *
  * Return: bytes read
  */
-
 ssize_t input_buf(info_t *info, char **buf, size_t *len)
 {
 	ssize_t r = 0;
@@ -29,13 +28,13 @@ ssize_t input_buf(info_t *info, char **buf, size_t *len)
 		{
 			if ((*buf)[r - 1] == '\n')
 			{
-				(*buf)[r - 1] = '\0'; /* removetrailing newli */
+				(*buf)[r - 1] = '\0'; /* remove trailing newline */
 				r--;
 			}
 			info->linecount_flag = 1;
 			remove_comments(*buf);
 			build_history_list(info, *buf, info->histcount++);
-			if (_strchr(*buf, ';'))/* is this a command chain? */
+			/* if (_strchr(*buf, ';')) is this a command chain? */
 			{
 				*len = r;
 				info->cmd_buf = buf;
@@ -48,9 +47,9 @@ ssize_t input_buf(info_t *info, char **buf, size_t *len)
 /**
  * get_input - gets a line minus the newline
  * @info: parameter struct
+ *
  * Return: bytes read
  */
-
 ssize_t get_input(info_t *info)
 {
 	static char *buf; /* the ';' command chain buffer */
@@ -85,6 +84,7 @@ ssize_t get_input(info_t *info)
 		*buf_p = p; /* pass back pointer to current command position */
 		return (_strlen(p)); /* return length of current command */
 	}
+
 	*buf_p = buf; /* else not a chain, pass back buffer from _getline() */
 	return (r); /* return length of buffer from _getline() */
 }
@@ -94,6 +94,7 @@ ssize_t get_input(info_t *info)
  * @info: parameter struct
  * @buf: buffer
  * @i: size
+ *
  * Return: r
  */
 ssize_t read_buf(info_t *info, char *buf, size_t *i)
@@ -116,7 +117,6 @@ ssize_t read_buf(info_t *info, char *buf, size_t *i)
  *
  * Return: s
  */
-
 int _getline(info_t *info, char **ptr, size_t *length)
 {
 	static char buf[READ_BUF_SIZE];
@@ -130,6 +130,7 @@ int _getline(info_t *info, char **ptr, size_t *length)
 		s = *length;
 	if (i == len)
 		i = len = 0;
+
 	r = read_buf(info, buf, &len);
 	if (r == -1 || (r == 0 && len == 0))
 		return (-1);
@@ -139,6 +140,7 @@ int _getline(info_t *info, char **ptr, size_t *length)
 	new_p = _realloc(p, s, s ? s + k : k + 1);
 	if (!new_p) /* MALLOC FAILURE! */
 		return (p ? free(p), -1 : -1);
+
 	if (s)
 		_strncat(new_p, buf + i, k - i);
 	else
@@ -157,9 +159,9 @@ int _getline(info_t *info, char **ptr, size_t *length)
 /**
  * sigintHandler - blocks ctrl-C
  * @sig_num: the signal number
+ *
  * Return: void
  */
-
 void sigintHandler(__attribute__((unused))int sig_num)
 {
 	_puts("\n");
