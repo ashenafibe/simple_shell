@@ -60,20 +60,14 @@ int _unsetenv(info_t *info, char *var)
  */
 int _setenv(info_t *info, char *var, char *value)
 {
-	char *buf = NULL;
-	list_t *node;
-	char *p;
+	char *buf = NULL;list_t *node;char *p;
 
-	if (!var || !value)
-		return (0);
+	if (!var || !value)return (0);
 
 	buf = malloc(_strlen(var) + _strlen(value) + 2);
 	if (!buf)
 		return (1);
-	_strcpy(buf, var);
-	_strcat(buf, "=");
-	_strcat(buf, value);
-	node = info->env;
+	_strcpy(buf, var);_strcat(buf, "=");_strcat(buf, value);node = info->env;
 	while (node)
 	{
 		p = starts_with(node->str, var);
